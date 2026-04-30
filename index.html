@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Sentiment Analyzer</title>
+    
+    <!-- Correct CSS linking -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Twitter Sentiment Analyzer</h1>
+
+    <form action="/analyze" method="POST">
+        <textarea name="text" placeholder="Enter multiple tweets (one per line)..." required></textarea>
+        <br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if results %}
+        <div class="result">
+            <h2>Results:</h2>
+
+            <table border="1" cellpadding="10">
+                <tr>
+                    <th>Tweet</th>
+                    <th>Sentiment</th>
+                </tr>
+
+                {% for tweet, sentiment in results %}
+                <tr>
+                    <td>{{ tweet }}</td>
+                    <td>{{ sentiment }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h3>Summary:</h3>
+            <p>Positive: {{ pos }}</p>
+            <p>Neutral: {{ neu }}</p>
+            <p>Negative: {{ neg }}</p>
+
+            <!-- FIX: Show graph only if it exists -->
+            {% if graph %}
+                <h3>Graph:</h3>
+                <img src="{{ url_for('static', filename=graph) }}" width="400">
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Sentiment Analyzer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+            color: #eaeaea;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+            background: #121212;
+            padding: 30px;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 12px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.6);
+        }
+
+        h1 {
+            color: #00adb5;
+        }
+
+        textarea {
+            width: 80%;
+            height: 120px;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #1f1f2e;
+            color: #fff;
+        }
+
+        textarea::placeholder {
+            color: #aaa;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #00adb5, #007BFF);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px rgba(0, 173, 181, 0.6);
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            background: #1a1a2e;
+        }
+
+        th {
+            background: #00adb5;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #333;
+        }
+
+        tr:hover {
+            background: #222;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .Positive {
+            color: #00ffae;
+            font-weight: bold;
+        }
+
+        .Negative {
+            color: #ff4c4c;
+            font-weight: bold;
+        }
+
+        .Neutral {
+            color: #cccccc;
+            font-weight: bold;
+        }
+
+        img {
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Twitter Sentiment Analyzer</h1>
+
+    <form action="/analyze" method="POST">
+        <textarea name="text" placeholder="Enter multiple tweets (one per line)..." required></textarea>
+        <br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if results %}
+        <div class="result">
+            <h2>Results:</h2>
+
+            <table>
+                <tr>
+                    <th>Tweet</th>
+                    <th>Sentiment</th>
+                </tr>
+
+                {% for tweet, sentiment in results %}
+                <tr>
+                    <td>{{ tweet }}</td>
+                    <td class="{{ sentiment }}">{{ sentiment }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h3>Summary:</h3>
+            <p>Positive: {{ pos }}</p>
+            <p>Neutral: {{ neu }}</p>
+            <p>Negative: {{ neg }}</p>
+
+            {% if graph %}
+                <h3>Graph:</h3>
+                <img src="{{ url_for('static', filename=graph) }}" width="400">
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
